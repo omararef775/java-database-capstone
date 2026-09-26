@@ -1,53 +1,98 @@
-/* this is the style sheet file for index.htlm  */
+/* 1. الإعدادات العالمية (Reset) لتوحيد المقاسات في كل المتصفحات */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* لضمان أن الحواف لا تزيد من الحجم الكلي للعنصر */
+}
 
-/* 
-**Global Reset (`*`)**
+html, body {
+    height: 100%;
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f4f7f6; /* لون خلفية ناعم كبديل في حال تأخر الصورة */
+}
 
-* Remove all default margin and padding.
-* Use `border-box` for sizing to include padding and border in element size.
+/* 2. تخطيط الحاويات (Flexbox) لجعل العناصر مرنة وتملأ الشاشة */
+.wrapper {
+    display: flex;
+    flex-direction: column; /* ترتيب العناصر عمودياً (رأس ثم محتوى ثم ذيل) */
+    min-height: 100vh; /* تأخذ كامل ارتفاع الشاشة على الأقل */
+}
 
-**Base (`html, body`)**
+/* 3. منطقة المحتوى الأساسية (الأزرار والخلفية) */
+.main-content {
+    flex: 1; /* تأخذ كل المساحة المتبقية بين الرأس والذيل */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* توسيط عمودي */
+    align-items: center; /* توسيط أفقي */
 
-* Set height to 100% for full viewport layout.
-* Use the `'Roboto'` sans-serif font for modern, clean typography.
+    /* إعدادات صورة الخلفية */
+    background-image: url('../images/defineRole/index.png'); /* تأكد من وجود الصورة في هذا المسار */
+    background-size: cover; /* تغطية الشاشة بالكامل */
+    background-position: center;
+    background-attachment: fixed; /* جعل الخلفية ثابتة أثناء التمرير ليعطي طابعاً احترافياً */
+}
 
-**Layout Wrapper (`.wrapper`)**
+.main-content h2 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* ظل للنص ليبرز فوق الخلفية */
+}
 
-* Use a vertical flexbox layout.
-* Ensure the wrapper covers at least the full height of the screen (`min-height: 100vh`).
+/* 4. تنسيق أزرار اختيار الأدوار */
+.role-buttons {
+    display: flex;
+    gap: 20px; /* مسافة بين الأزرار */
+}
 
-**Heading (`h2`)**
+.dashboard-btn {
+    background-color: #015c5d; /* اللون الأساسي للعيادة */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-radius: 8px; /* زوايا دائرية */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s; /* حركة سلسة عند التمرير */
+}
 
-* Set a large font size (`48px`) for prominence.
-* Add a bottom margin of `50px` for spacing.
-* Use a dark teal color (`#003e3e`).
-* Make the font bold and use a blended font stack (`'Alegreya', 'Roboto', sans-serif`) for elegant styling.
+.dashboard-btn:hover {
+    background-color: #017d7e; /* لون أفتح عند التحويم */
+    transform: translateY(-3px); /* ارتفاع الزر للأعلى قليلاً */
+}
 
-**Main Section (`.main-content`)**
+/* 5. تصميم النافذة المنبثقة (Modal) */
+.modal {
+    display: none; /* مخفية افتراضياً، الـ JS سيغيرها إلى flex عند النقر */
+    position: fixed; /* لتغطي الشاشة بأكملها */
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* خلفية سوداء شفافة تعزل الصفحة */
+    z-index: 1000; /* لضمان ظهورها فوق كل شيء */
+    justify-content: center;
+    align-items: center;
+}
 
-* Allow the section to grow to fill space with `flex-grow: 1`.
-* Add `40px` of internal padding.
-* Center content both horizontally and vertically using `justify-content` and `align-items`.
-* Display items in a column direction.
-* Center all text.
-* Apply a full-screen background image with:
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%; /* تجاوب مع شاشات الجوال */
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
 
-  * `cover` size
-  * `center` positioning
-  * no repeat
-  * `fixed` attachment to keep image still during scroll
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
 
-**Buttons (`button`)**
-
-* Style with a teal green background (`#015c5d`) and white text.
-* Remove borders and round the corners (`12px`).
-* Use `10px 20px` padding and set width to `200px`.
-* Add a top margin of `10px` for spacing.
-* Enable pointer cursor and readable font size (`16px`).
-* On hover, change background color to bold red (`#A62B1F`).
-
-**Dashboard Buttons (`.dashboard-btn`)**
-
-* Use the same base green background (`#015c5d`) as the default button.
-* On hover, darken the background to deep teal (`#003e3e`) for visual feedback.
- */
+.close:hover {
+    color: red;
+}
