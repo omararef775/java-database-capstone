@@ -40,8 +40,7 @@ public class Service {
     }
 
     public ResponseEntity<Map<String, String>> validateToken(String token, String user) {
-        Map<?, ?> errors = tokenService.validateToken(token, user);
-        if (errors != null && !errors.isEmpty()) {
+        if (!tokenService.validateToken(token, user)) {
             Map<String, String> response = new HashMap<>();
             response.put("error", "Unauthorized access");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);

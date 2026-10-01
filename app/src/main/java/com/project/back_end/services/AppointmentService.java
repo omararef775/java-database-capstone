@@ -1,6 +1,7 @@
 package com.project.back_end.services;
 
 import com.project.back_end.models.Appointment;
+import com.project.back_end.models.Doctor;
 import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
@@ -56,13 +57,11 @@ public class AppointmentService {
             Optional<Appointment> existingAppointment = appointmentRepository.findById(appointment.getId());
             if (existingAppointment.isPresent()) {
 
-                // --- هذا هو الجزء الذي تم تعديله ---
                 int validationStatus = service.validateAppointment(appointment);
                 if (validationStatus != 1) {
                     response.put("error", validationStatus == 0 ? "Time slot not available" : "Doctor not found");
                     return ResponseEntity.badRequest().body(response);
                 }
-                // -------------------------------------
 
                 appointmentRepository.save(appointment);
                 response.put("message", "Appointment updated successfully");
@@ -81,8 +80,7 @@ public class AppointmentService {
     public ResponseEntity<Map<String, String>> cancelAppointment(long id, String token) {
         Map<String, String> response = new HashMap<>();
         try {
-            Map<?, ?> authErrors = tokenService.validateToken(token, "patient");
-            if (authErrors != null && !authErrors.isEmpty()) {
+            if (!tokenService.validateToken(token, "patient")) {
                 response.put("error", "Unauthorized access");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
@@ -106,7 +104,15 @@ public class AppointmentService {
     public Map<String, Object> getAppointment(String pname, LocalDate date, String token) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Long doctorId = Long.parseLong(tokenService.getIdFromToken(token).toString());
+            String email = tokenService.getEmailFromToken(token);
+            Doctor doctor = doctorRepository.findByEmail(email);
+
+            if (doctor == null) {
+                response.put("error", "Doctor not found");
+                return response;
+            }
+
+            Long doctorId = doctor.getId();
             LocalDateTime start = date.atStartOfDay();
             LocalDateTime end = date.atTime(LocalTime.MAX);
 
