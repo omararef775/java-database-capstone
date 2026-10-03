@@ -20,6 +20,15 @@ window.onload = function () {
             openModal('doctorLogin');
         });
     }
+
+    const patientBtn = document.getElementById('patientBtn');
+    if (patientBtn) {
+        patientBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.setItem('userRole', 'patient');
+            window.location.href = '/pages/patientDashboard.html';
+        });
+    }
 };
 
 window.adminLoginHandler = async function () {
@@ -42,11 +51,10 @@ window.adminLoginHandler = async function () {
 
         if (response.ok) {
             const data = await response.json();
-            localStorage.setItem('token', data.token || data.jwt || data);
-
-            if (typeof selectRole === "function") {
-                selectRole("admin");
-            }
+            const token = data.token;
+            localStorage.setItem('token', token);
+            localStorage.setItem('userRole', 'admin');
+            window.location.href = `/adminDashboard/${token}`;
         } else {
             alert("بيانات اعتماد غير صالحة!");
         }
@@ -75,11 +83,10 @@ window.doctorLoginHandler = async function () {
 
         if (response.ok) {
             const data = await response.json();
-            localStorage.setItem('token', data.token || data.jwt || data);
-
-            if (typeof selectRole === "function") {
-                selectRole("doctor");
-            }
+            const token = data.token;
+            localStorage.setItem('token', token);
+            localStorage.setItem('userRole', 'doctor');
+            window.location.href = `/doctorDashboard/${token}`;
         } else {
             alert("بيانات اعتماد غير صالحة!");
         }

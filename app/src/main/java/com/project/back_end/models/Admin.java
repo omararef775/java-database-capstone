@@ -23,8 +23,6 @@ public class Admin {
     private String password;
 
     // --- الحقل الجديد المطابق للتصميم ---
-    @NotNull(message = "Email is required")
-    @Email(message = "Must be a valid email format")
     private String email;
 
     public Admin() {}

@@ -25,23 +25,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function loadDoctorCards() {
   getDoctors()
-      .then(doctors => {
+      .then(response => {
         const contentDiv = document.getElementById("content");
         contentDiv.innerHTML = "";
 
-        doctors.forEach(doctor => {
-          const card = createDoctorCard(doctor);
-          contentDiv.appendChild(card);
-        });
+        // هذا هو السطر الذي نسيه مصممو الكورس: استخراج المصفوفة من الكائن
+        const doctorList = response.doctors || response;
+
+        // حماية إضافية لمنع انهيار الصفحة
+        if (Array.isArray(doctorList)) {
+          doctorList.forEach(doctor => {
+            const card = createDoctorCard(doctor);
+            contentDiv.appendChild(card);
+          });
+        }
       })
       .catch(error => {
         console.error("Failed to load doctors:", error);
       });
 }
 
-document.getElementById("searchBar").addEventListener("input", filterDoctorsOnChange);
-document.getElementById("filterTime").addEventListener("change", filterDoctorsOnChange);
-document.getElementById("filterSpecialty").addEventListener("change", filterDoctorsOnChange);
+document.addEventListener("DOMContentLoaded", () => {
+  const searchBar = document.getElementById("searchBar");
+  const filterTime = document.getElementById("filterTime");
+  const filterSpecialty = document.getElementById("filterSpecialty");
+  if (searchBar) searchBar.addEventListener("input", filterDoctorsOnChange);
+  if (filterTime) filterTime.addEventListener("change", filterDoctorsOnChange);
+  if (filterSpecialty) filterSpecialty.addEventListener("change", filterDoctorsOnChange);
+});
 
 function filterDoctorsOnChange() {
   const searchBar = document.getElementById("searchBar").value.trim();

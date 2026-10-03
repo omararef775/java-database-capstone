@@ -16,11 +16,8 @@ export async function getDoctors() {
 
 export async function deleteDoctor(id, token) {
     try {
-        const response = await fetch(`${DOCTOR_API}/delete/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+        const response = await fetch(`${DOCTOR_API}/${id}/${token}`, {
+            method: 'DELETE'
         });
 
         if (response.ok) {
@@ -34,11 +31,10 @@ export async function deleteDoctor(id, token) {
 
 export async function saveDoctor(doctor, token) {
     try {
-        const response = await fetch(DOCTOR_API, {
+        const response = await fetch(`${DOCTOR_API}/${token}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(doctor)
         });
@@ -54,20 +50,19 @@ export async function saveDoctor(doctor, token) {
 
 export async function filterDoctors(name, time, specialty) {
     try {
-        const params = new URLSearchParams();
-        if (name) params.append("name", name);
-        if (time) params.append("time", time);
-        if (specialty) params.append("specialty", specialty);
+        const n = (name && name.trim()) ? name.trim() : 'null';
+        const t = (time && time.trim()) ? time.trim() : 'null';
+        const s = (specialty && specialty.trim()) ? specialty.trim() : 'null';
 
-        const url = `${DOCTOR_API}/filter?${params.toString()}`;
+        const url = `${DOCTOR_API}/filter/${n}/${t}/${s}`;
 
         const response = await fetch(url);
         if (response.ok) {
             return await response.json();
         }
-        return [];
+        return { doctors: [] };
     } catch (error) {
-        alert("حدث خطأ أثناء تصفية الأطباء");
-        return [];
+        alert('حدث خطأ أثناء تصفية الأطباء');
+        return { doctors: [] };
     }
 }

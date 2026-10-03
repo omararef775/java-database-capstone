@@ -34,7 +34,7 @@ function renderHeader() {
             <div class="header-container">
                 <div class="logo">بوابة الأطباء</div>
                 <nav class="nav-links">
-                    <a href="/doctorDashboard">الرئيسية</a>
+                    <a href="/pages/doctorDashboard.html">الرئيسية</a>
                     <a href="#" id="logoutBtn">تسجيل خروج</a>
                 </nav>
             </div>
@@ -54,8 +54,8 @@ function renderHeader() {
             <div class="header-container">
                 <div class="logo">بوابة المرضى</div>
                 <nav class="nav-links">
-                    <a href="/patientDashboard">الرئيسية</a>
-                    <a href="/patientAppointments">مواعيدي</a>
+                    <a href="/pages/loggedPatientDashboard.html">الرئيسية</a>
+                    <a href="/pages/patientAppointments.html">مواعيدي</a>
                     <a href="#" id="logoutPatientBtn">تسجيل خروج</a>
                 </nav>
             </div>
@@ -70,8 +70,8 @@ function attachHeaderButtonListeners() {
     const addDocBtn = document.getElementById("addDocBtn");
     if (addDocBtn) {
         addDocBtn.addEventListener("click", () => {
-            if (typeof openModal === "function") {
-                openModal('addDoctor');
+            if (typeof window.openModal === "function") {
+                window.openModal('addDoctor');
             }
         });
     }
@@ -89,14 +89,14 @@ function attachHeaderButtonListeners() {
     const loginBtn = document.getElementById("loginBtn");
     if (loginBtn) {
         loginBtn.addEventListener("click", () => {
-            if (typeof openModal === "function") openModal('login');
+            if (typeof window.openModal === "function") window.openModal('patientLogin');
         });
     }
 
     const registerBtn = document.getElementById("registerBtn");
     if (registerBtn) {
         registerBtn.addEventListener("click", () => {
-            if (typeof openModal === "function") openModal('register');
+            if (typeof window.openModal === "function") window.openModal('patientSignup');
         });
     }
 }

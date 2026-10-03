@@ -15,9 +15,9 @@ export async function patientSignup(data) {
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(result.message);
+      throw new Error(result.error || result.message || 'Registration failed');
     }
-    return { success: response.ok, message: result.message };
+    return { success: response.ok, message: result.message || 'Registered successfully' };
   } catch (error) {
     console.error("Error :: patientSignup :: ", error);
     return { success: false, message: error.message };
@@ -50,7 +50,7 @@ export async function getPatientData(token) {
 
 export async function getPatientAppointments(id, token, user) {
   try {
-    const response = await fetch(`${PATIENT_API}/${id}/${user}/${token}`);
+    const response = await fetch(`${PATIENT_API}/${id}/${token}`);
     const data = await response.json();
 
     console.log(data.appointments);

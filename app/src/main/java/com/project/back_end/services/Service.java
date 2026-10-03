@@ -61,7 +61,8 @@ public class Service {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
         } catch (Exception e) {
-            response.put("error", "Internal Server Error");
+            e.printStackTrace();
+            response.put("error", "Internal Server Error: " + e.getClass().getSimpleName() + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

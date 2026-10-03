@@ -103,7 +103,7 @@ public class DoctorService {
         try {
             Doctor doctor = doctorRepository.findByEmail(login.getEmail());
             if (doctor != null && doctor.getPassword().equals(login.getPassword())) {
-                String token = tokenService.generateToken(String.valueOf(doctor.getId()), "doctor");
+                String token = tokenService.generateToken(doctor.getEmail(), "doctor");
                 response.put("token", token);
                 return ResponseEntity.ok(response);
             } else {

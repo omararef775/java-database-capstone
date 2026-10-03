@@ -47,5 +47,16 @@
         <div id="modal-body"></div>
     </div>
 </div>
+<script type="module">
+    // استدعاء النوافذ المنبثقة بشكل إجباري لتعمل الأزرار
+    import { openModal } from '../js/components/modals.js';
+    window.openModal = openModal;
+
+    // إخفاء المربع الأبيض المزعج فور تحميل الصفحة
+    setTimeout(() => {
+        const m = document.getElementById("modal");
+        if(m) m.style.display = "none";
+    }, 100);
+</script>
 </body>
 </html>
